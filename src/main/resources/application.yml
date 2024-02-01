@@ -1,0 +1,22 @@
+spring:
+  dataSource:
+    url: jdbc:postgresql://localhost:5432/TaxiManagement
+    username: postgres
+    password: devadath@1234
+    driver-class-name: org.postgresql.Driver
+  profile:
+    active: dev
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+logging:
+  level:
+    org.springframework: INFO
+
+
