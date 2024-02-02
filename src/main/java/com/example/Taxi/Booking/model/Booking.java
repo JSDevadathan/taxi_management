@@ -15,7 +15,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -31,7 +31,7 @@ public class Booking {
     private String pickupLocation;
     private String dropOffLocation;
     private Double fare;
-    private LocalTime bookingTime;
+    private LocalDateTime bookingTime;
 
     @Enumerated(EnumType.STRING)
     private Status status;

@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class SignUpResponse {
-    private String email;
-    private String password;
+    private Long userId;
+    private String name;
 }

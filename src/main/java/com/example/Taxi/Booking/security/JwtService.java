@@ -1,6 +1,7 @@
 package com.example.Taxi.Booking.security;
 
 
+import com.example.Taxi.Booking.contract.response.LoginResponse;
 import com.example.Taxi.Booking.expection.FailedToGenerateException;
 import com.example.Taxi.Booking.model.User;
 import io.jsonwebtoken.Claims;
@@ -32,20 +33,12 @@ public class JwtService {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
-
-    public String generateToken(UserDetails userDetails) {
-        return generateToken(userDetails, null);
-    }
-
-    public String generateToken(UserDetails userDetails, String role) {
+    public String generateToken(User userDetails) {
         Map<String, Object> claims = new HashMap<>();
-        if (role != null) {
-            claims.put("role", role);
-        }
 
         return Jwts.builder()
                 .setClaims(claims)
-                .setSubject(userDetails.getUsername())
+                .setSubject(userDetails.getEmail())
                 .claim("userId", ((User) userDetails).getUserId())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))

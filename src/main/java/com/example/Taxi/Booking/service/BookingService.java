@@ -1,10 +1,9 @@
 package com.example.Taxi.Booking.service;
 
+import com.example.Taxi.Booking.constant.Status;
 import com.example.Taxi.Booking.contract.request.BookingRequest;
-import com.example.Taxi.Booking.contract.request.CancelBookingRequest;
-import com.example.Taxi.Booking.contract.request.SignupRequest;
 import com.example.Taxi.Booking.contract.response.BookingResponse;
-import com.example.Taxi.Booking.contract.response.CancelBookingResponse;
+import com.example.Taxi.Booking.contract.response.TaxiResponse;
 import com.example.Taxi.Booking.model.Booking;
 import com.example.Taxi.Booking.model.Taxi;
 import com.example.Taxi.Booking.model.User;
@@ -16,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,33 +28,49 @@ public class BookingService {
     private final TaxiRepository taxiRepository;
     private final UserRepository userRepository;
 
-    public BookingResponse book(BookingRequest bookingRequest) {
-        Taxi taxi = taxiRepository.findById(bookingRequest.getTaxiId()).orElseThrow(() -> new EntityNotFoundException("Taxi not found"));
-        User user = userRepository.findById(bookingRequest.getUserId()).orElseThrow(() -> new EntityNotFoundException("User not found"));
+    public BookingResponse book(Long userId, Long taxiId, Long distance, BookingRequest bookingRequest) {
+        Taxi taxi = taxiRepository.findById(taxiId).orElseThrow(() -> new EntityNotFoundException("Taxi not found"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+        Double minimumCharge = 10.00;
+        Double fare = distance * minimumCharge;
+
+        if(fare > user.getAccountBalance()) {
+            throw new EntityNotFoundException("Insufficient balance");
+        }
+
         Booking booking = Booking.builder()
                 .pickupLocation(bookingRequest.getPickupLocation())
                 .dropOffLocation(bookingRequest.getDropOffLocation())
-                .fare(bookingRequest.getFare())
+                .fare(fare)
                 .taxiId(taxi.getTaxiId())
                 .userId(user.getUserId())
-                .status(bookingRequest.getStatus())
+                .bookingTime(LocalDateTime.now())
+                .status(Status.BOOKED)
                 .build();
+
+        User savings = User.builder()
+                .userId(user.getUserId())
+                .name(user.getName())
+                .email(user.getEmail())
+                .password(user.getPassword())
+                .accountBalance(user.getAccountBalance())
+                .build();
+
+        savings = userRepository.save(savings);
         booking = bookRepository.save(booking);
         return modelMapper.map(booking, BookingResponse.class);
     }
 
-    public List<BookingResponse> view() {
-        List<Booking> bookings = bookRepository.findAll();
-        return bookings.stream()
-                .map(booking -> modelMapper.map(booking, BookingResponse.class))
-                .collect(Collectors.toList());
+    public BookingResponse view(Long id) {
+        Booking booking = bookRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Booking not found"));
+        return modelMapper.map(booking, BookingResponse.class);
+
     }
 
-    public CancelBookingResponse cancel(Long bookingId, CancelBookingRequest cancelBookingRequest) {
-        Booking booking = Booking.builder()
-                .status(cancelBookingRequest.getStatus())
-                .build();
-        booking = bookRepository.save(booking);
-        return modelMapper.map(booking, CancelBookingResponse.class);
+    public void cancel(Long bookingId) {
+        Booking booking = bookRepository.findById(bookingId).orElseThrow(() -> new EntityNotFoundException("Booking not found"));
+        bookRepository.delete(booking);
     }
+
 }
