@@ -17,7 +17,6 @@ import java.util.List;
 public class TaxiService {
     private final TaxiRepository taxiRepository;
     private final ModelMapper modelMapper;
-    private final BookingRepository bookingRepository;
     public TaxiResponse createTaxi(TaxiRequest taxiRequest) {
         Taxi taxi = Taxi.builder()
                 .currentLocation(taxiRequest.getCurrentLocation())

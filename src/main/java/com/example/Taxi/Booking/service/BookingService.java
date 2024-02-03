@@ -56,7 +56,7 @@ public class BookingService {
                 .name(user.getName())
                 .email(user.getEmail())
                 .password(user.getPassword())
-                .accountBalance(user.getAccountBalance())
+                .accountBalance(user.getAccountBalance() - booking.getFare())
                 .build();
 
         savings = userRepository.save(savings);
@@ -94,7 +94,7 @@ public class BookingService {
         User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
         List<Taxi> taxi = taxiRepository.findAll();
         List<Taxi> taxiAvailable = new ArrayList<>();
-        for(Taxi taxis: taxiAvailable){
+        for(Taxi taxis: taxi){
             if(taxis.getCurrentLocation().equals(pickupLocation)){
                 taxiAvailable.add(taxis);
             }
@@ -107,5 +107,6 @@ public class BookingService {
                     .collect(Collectors.toList());
         }
     }
+
 
 }

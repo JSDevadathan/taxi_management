@@ -19,11 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class ApplicationConfiguration {
     private final UserRepository userRepository;
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
-            throws Exception {
-        return config.getAuthenticationManager();
-    }
+
     @Bean
     public UserDetailsService userDetailsService() {
         return username ->
@@ -31,28 +27,21 @@ public class ApplicationConfiguration {
     }
 
     @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+
+    @Bean
     public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider =
-                new DaoAuthenticationProvider() {
-                    public void additionalAuthenticationChecks(
-                            UserDetails userDetails,
-                            UsernamePasswordAuthenticationToken authentication) {
-                        if (!passwordEncoder()
-                                .matches(
-                                        authentication.getCredentials().toString(),
-                                        userDetails.getPassword())) {
-                            throw new EntityNotFoundException("User");
-                        }
-                    }
-                };
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService());
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
     }
-
 }
