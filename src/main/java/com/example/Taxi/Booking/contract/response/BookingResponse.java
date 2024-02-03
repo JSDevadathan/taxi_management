@@ -1,16 +1,13 @@
 package com.example.Taxi.Booking.contract.response;
 
 import com.example.Taxi.Booking.constant.Status;
-import com.example.Taxi.Booking.model.Taxi;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 @Getter
 @AllArgsConstructor

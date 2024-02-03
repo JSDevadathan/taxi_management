@@ -10,12 +10,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -26,6 +25,7 @@ public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bookingId;
+
     private Long userId;
     private Long taxiId;
     private String pickupLocation;
@@ -36,8 +36,7 @@ public class Booking {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @ManyToOne
-    private User user;
+    @ManyToOne private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "taxi")
