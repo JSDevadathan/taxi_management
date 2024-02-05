@@ -1,10 +1,5 @@
 package com.example.Taxi.Booking.controller;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import com.example.Taxi.Booking.contract.request.AccountBalanceRequest;
 import com.example.Taxi.Booking.contract.request.LoginRequest;
 import com.example.Taxi.Booking.contract.request.SignupRequest;
@@ -26,14 +21,23 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 class UserControllerTest {
-    @Autowired private UserController userController;
+    @Autowired
+    private UserController userController;
 
-    @MockBean private UserService userService;
+    @MockBean
+    private UserService userService;
 
-    @Autowired private MockMvc mockMvc;
+    @Autowired
+    private MockMvc mockMvc;
 
     @Test
     void testSignUp() throws Exception {
@@ -41,6 +45,27 @@ class UserControllerTest {
         SignUpResponse signUpResponse = new SignUpResponse();
         when(userService.signup(signupRequest)).thenReturn(signUpResponse);
     }
+
+    @Test
+    public void testSignup_Success() throws Exception {
+        SignupRequest signupRequest = SignupRequest.builder()
+                .email("testuser@example.com")
+                .password("password")
+                .name("Test User")
+                .build();
+
+        SignUpResponse signUpResponse = SignUpResponse.builder()
+                .name("Test User")
+                .build();
+
+        when(userService.signup(any(SignupRequest.class))).thenReturn(signUpResponse);
+
+        mockMvc.perform(post("/v1/users/signup")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(signupRequest)))
+                .andExpect(status().isOk());
+    }
+
 
     @Test
     void testLogin() throws Exception {

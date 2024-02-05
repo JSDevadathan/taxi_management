@@ -1,5 +1,27 @@
 package com.example.Taxi.Booking.controller;
 
+import com.example.Taxi.Booking.constant.Status;
+import com.example.Taxi.Booking.contract.request.BookingRequest;
+import com.example.Taxi.Booking.contract.response.BookingResponse;
+import com.example.Taxi.Booking.contract.response.CancelResponse;
+import com.example.Taxi.Booking.contract.response.TaxiResponse;
+import com.example.Taxi.Booking.repository.BookingRepository;
+import com.example.Taxi.Booking.service.BookingService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.web.servlet.MockMvc;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -7,39 +29,32 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.example.Taxi.Booking.contract.request.BookingRequest;
-import com.example.Taxi.Booking.contract.response.BookingResponse;
-import com.example.Taxi.Booking.contract.response.CancelResponse;
-import com.example.Taxi.Booking.contract.response.TaxiResponse;
-import com.example.Taxi.Booking.service.BookingService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.ArrayList;
-import java.util.List;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.MockMvc;
-
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 public class BookingControllerTest {
 
-    @Autowired private MockMvc mockMvc;
+    @Autowired
+    private MockMvc mockMvc;
 
-    @MockBean private BookingService bookingService;
+    @MockBean
+    private BookingService bookingService;
 
-    @InjectMocks private BookingController bookingController;
+    @InjectMocks
+    private BookingController bookingController;
+    @Mock
+    private BookingRepository bookingRepository;
+    @Mock
+    private ModelMapper modelMapper;
+
 
     @Test
     void testBooking() {
-        BookingRequest bookingRequest = new BookingRequest(null, null);
+        BookingRequest bookingRequest = new BookingRequest("asda", "dasd");
         BookingResponse bookingResponse =
-                new BookingResponse(1L, 1L, 1L, null, null, null, null, null);
+                new BookingResponse(1L, 1L, 1L, "ADS", "da", 120D, LocalDateTime.now(), Status.BOOKED);
         when(bookingService.book(1L, 1L, 1L, bookingRequest)).thenReturn(bookingResponse);
     }
+
 
     @Test
     void testViewBookingById() throws Exception {

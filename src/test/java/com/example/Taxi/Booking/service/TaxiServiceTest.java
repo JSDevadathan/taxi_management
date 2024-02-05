@@ -1,7 +1,5 @@
 package com.example.Taxi.Booking.service;
 
-import static org.mockito.Mockito.*;
-
 import com.example.Taxi.Booking.contract.request.TaxiRequest;
 import com.example.Taxi.Booking.contract.response.TaxiResponse;
 import com.example.Taxi.Booking.model.Taxi;
@@ -13,14 +11,22 @@ import org.mockito.Mock;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 @SpringBootTest
 public class TaxiServiceTest {
 
-    @InjectMocks private TaxiService taxiService;
+    @InjectMocks
+    private TaxiService taxiService;
 
-    @Mock private TaxiRepository taxiRepository;
+    @Mock
+    private TaxiRepository taxiRepository;
 
-    @Mock private ModelMapper modelMapper;
+    @Mock
+    private ModelMapper modelMapper;
 
     private TaxiRequest taxiRequest;
     private Taxi taxi;

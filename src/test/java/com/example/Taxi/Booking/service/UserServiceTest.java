@@ -1,9 +1,5 @@
 package com.example.Taxi.Booking.service;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import com.example.Taxi.Booking.contract.request.AccountBalanceRequest;
 import com.example.Taxi.Booking.contract.request.LoginRequest;
 import com.example.Taxi.Booking.contract.request.SignupRequest;
@@ -13,7 +9,6 @@ import com.example.Taxi.Booking.expection.InvalidUserException;
 import com.example.Taxi.Booking.model.User;
 import com.example.Taxi.Booking.repository.UserRepository;
 import com.example.Taxi.Booking.security.JwtService;
-import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -23,16 +18,27 @@ import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 public class UserServiceTest {
 
-    @InjectMocks UserService userService;
+    @InjectMocks
+    UserService userService;
 
-    @InjectMocks JwtService jwtService;
+    @InjectMocks
+    JwtService jwtService;
 
-    @Mock UserRepository userRepository;
-    @Mock PasswordEncoder passwordEncoder;
+    @Mock
+    UserRepository userRepository;
+    @Mock
+    PasswordEncoder passwordEncoder;
 
-    @Mock ModelMapper modelMapper;
+    @Mock
+    ModelMapper modelMapper;
 
     @BeforeEach
     public void setUp() {
@@ -67,6 +73,7 @@ public class UserServiceTest {
         verify(userRepository).findByEmail(Mockito.<String>any());
         verify(passwordEncoder).matches(Mockito.<CharSequence>any(), Mockito.<String>any());
     }
+
 
     @Test
     void testAccountBalance() {
