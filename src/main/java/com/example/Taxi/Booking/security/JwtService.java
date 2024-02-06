@@ -12,14 +12,18 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service
 public class JwtService {
-    private static final long expirationTime = 1000 * 60 * 60 * 24;
-    private static final String secretKey =
-            "404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970";
+    @Value("${jwt.secret}")
+    private String secretKey;
+
+    @Value("${jwt.expiry}")
+    private Integer expirationTime;
 
     public String generateToken(User userDetails) {
         Map<String, Object> claims = new HashMap<>();
@@ -55,7 +59,7 @@ public class JwtService {
         return true;
     }
 
-    private boolean isTokenExpired(String token) {
+    public boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
