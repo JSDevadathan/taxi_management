@@ -49,7 +49,7 @@ public class UserService {
         User user =
                 userRepository
                         .findById(userId)
-                        .orElseThrow(() -> new EntityNotFoundException("User"));
+                        .orElseThrow(() -> new EntityNotFoundException("User", userId));
         user =
                 User.builder()
                         .userId(user.getUserId())
