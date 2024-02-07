@@ -243,8 +243,8 @@ public class BookingServiceTest {
     @Test
     void testBookTaxi() {
         User user = new User(1L, "js", "js@gmail.com", "Helloworld", 1000.0);
-        Taxi taxi = new Taxi(1L, "Midun", 12L, "Kakkanad");
-        BookingRequest request = new BookingRequest("Kakkanad", "Aluva");
+        Taxi taxi = new Taxi(1L, "Siuuu", 12L, "US");
+        BookingRequest request = new BookingRequest("US", "Uk");
         Long taxiId = 1L;
         Long distance = 80L;
         Double minimumCharge = 10.00;
