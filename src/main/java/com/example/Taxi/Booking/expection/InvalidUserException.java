@@ -1,7 +1,10 @@
 package com.example.Taxi.Booking.expection;
 
 public class InvalidUserException extends RuntimeException {
-    public InvalidUserException(String login) {
-        super("Invalid");
-    }
+        private String entity;
+        private Long id;
+
+        public InvalidUserException(String entity) {
+            super("Invalid " + entity);
+        }
 }
