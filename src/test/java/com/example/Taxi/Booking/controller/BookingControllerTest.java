@@ -63,7 +63,7 @@ public class BookingControllerTest {
 
         when(bookingService.view(id)).thenReturn(bookingResponse);
 
-        mockMvc.perform(get("/v1/view/" + id))
+        mockMvc.perform(get("/v2/view/" + id))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(new ObjectMapper().writeValueAsString(bookingResponse)));
@@ -79,7 +79,7 @@ public class BookingControllerTest {
         when(bookingService.cancelBooking(bookingId, userId, taxiId)).thenReturn(cancelResponse);
 
         mockMvc.perform(
-                        put("/v1/cancel/" + bookingId)
+                        put("/v2/cancel/" + bookingId)
                                 .param("userId", String.valueOf(userId))
                                 .param("taxiId", String.valueOf(taxiId)))
                 .andDo(print())
@@ -96,7 +96,7 @@ public class BookingControllerTest {
         when(bookingService.findLocation(userId, pickupLocation)).thenReturn(taxiResponses);
 
         mockMvc.perform(
-                        get("/v1/location")
+                        get("/v2/location")
                                 .param("userId", String.valueOf(userId))
                                 .param("pickupLocation", pickupLocation))
                 .andDo(print())

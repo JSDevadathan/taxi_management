@@ -5,13 +5,14 @@ import com.example.Taxi.Booking.contract.request.BookingRequest;
 import com.example.Taxi.Booking.contract.response.BookingResponse;
 import com.example.Taxi.Booking.contract.response.CancelResponse;
 import com.example.Taxi.Booking.contract.response.TaxiResponse;
+import com.example.Taxi.Booking.expection.EntityNotFoundException;
 import com.example.Taxi.Booking.model.Booking;
 import com.example.Taxi.Booking.model.Taxi;
 import com.example.Taxi.Booking.model.User;
 import com.example.Taxi.Booking.repository.BookingRepository;
 import com.example.Taxi.Booking.repository.TaxiRepository;
 import com.example.Taxi.Booking.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,11 +35,11 @@ public class BookingService {
         Taxi taxi =
                 taxiRepository
                         .findById(taxiId)
-                        .orElseThrow(() -> new EntityNotFoundException("Taxi not found"));
+                        .orElseThrow(() -> new EntityNotFoundException("Taxi",taxiId));
         User user =
                 userRepository
                         .findById(userId)
-                        .orElseThrow(() -> new EntityNotFoundException("User not found"));
+                        .orElseThrow(() -> new EntityNotFoundException("User",userId));
 
         Double minimumCharge = 10.00;
         Double fare = distance * minimumCharge;
@@ -77,7 +78,7 @@ public class BookingService {
         Booking booking =
                 bookRepository
                         .findById(id)
-                        .orElseThrow(() -> new EntityNotFoundException("Booking not found"));
+                        .orElseThrow(() -> new EntityNotFoundException("Booking", id));
         return modelMapper.map(booking, BookingResponse.class);
     }
 
@@ -85,15 +86,15 @@ public class BookingService {
         Booking booking =
                 bookRepository
                         .findById(bookingId)
-                        .orElseThrow(() -> new EntityNotFoundException("Booking"));
+                        .orElseThrow(() -> new EntityNotFoundException("Booking", bookingId));
         User user =
                 userRepository
                         .findById(userId)
-                        .orElseThrow(() -> new EntityNotFoundException("User"));
+                        .orElseThrow(() -> new EntityNotFoundException("User", userId));
         Taxi taxi =
                 taxiRepository
                         .findById(taxiId)
-                        .orElseThrow(() -> new EntityNotFoundException("Taxi"));
+                        .orElseThrow(() -> new EntityNotFoundException("Taxi", taxiId));
         Booking bookings =
                 Booking.builder()
                         .bookingId(bookingId)
@@ -113,7 +114,7 @@ public class BookingService {
         User user =
                 userRepository
                         .findById(userId)
-                        .orElseThrow(() -> new EntityNotFoundException("User not found"));
+                        .orElseThrow(() -> new EntityNotFoundException("User", userId));
         List<Taxi> taxi = taxiRepository.findAll();
         List<Taxi> taxiAvailable = new ArrayList<>();
         for (Taxi taxis : taxi) {
@@ -122,7 +123,7 @@ public class BookingService {
             }
         }
         if (taxiAvailable.isEmpty()) {
-            throw new EntityNotFoundException("No taxi available");
+            throw new EntityNotFoundException("Taxi");
         } else {
             return taxiAvailable.stream()
                     .map(taxi1 -> modelMapper.map(taxi1, TaxiResponse.class))

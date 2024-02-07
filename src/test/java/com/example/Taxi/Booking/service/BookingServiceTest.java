@@ -4,13 +4,13 @@ import com.example.Taxi.Booking.contract.request.BookingRequest;
 import com.example.Taxi.Booking.contract.response.BookingResponse;
 import com.example.Taxi.Booking.contract.response.CancelResponse;
 import com.example.Taxi.Booking.contract.response.TaxiResponse;
+import com.example.Taxi.Booking.expection.EntityNotFoundException;
 import com.example.Taxi.Booking.model.Booking;
 import com.example.Taxi.Booking.model.Taxi;
 import com.example.Taxi.Booking.model.User;
 import com.example.Taxi.Booking.repository.BookingRepository;
 import com.example.Taxi.Booking.repository.TaxiRepository;
 import com.example.Taxi.Booking.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -243,8 +243,8 @@ public class BookingServiceTest {
     @Test
     void testBookTaxi() {
         User user = new User(1L, "js", "js@gmail.com", "Helloworld", 1000.0);
-        Taxi taxi = new Taxi(1L, "Midun", 12L, "Kakkanad");
-        BookingRequest request = new BookingRequest("Kakkanad", "Aluva");
+        Taxi taxi = new Taxi(1L, "Siuuu", 12L, "US");
+        BookingRequest request = new BookingRequest("US", "Uk");
         Long taxiId = 1L;
         Long distance = 80L;
         Double minimumCharge = 10.00;
