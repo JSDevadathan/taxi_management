@@ -43,7 +43,7 @@
 
 #application.yml
 
-1. Password, secret key should not be in application.yml.
+1. Database url, username, password and secret key should not be in application.yml.
 
 
 
