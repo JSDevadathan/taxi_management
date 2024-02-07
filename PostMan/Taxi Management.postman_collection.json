@@ -16,7 +16,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"som\",\r\n    \"email\": \"sda@gmail.com\",\r\n    \"password\": \"ss\"\r\n}",
+					"raw": "{\r\n    \"name\": \"ww\",\r\n    \"email\": \"ww@gmail.com\",\r\n    \"password\": \"ss\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -37,7 +37,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"jsdevadathan@gmail.com\",\r\n    \"password\": \"ss\"\r\n}",
+					"raw": "{\r\n    \"email\": \"ww@gmail.com\",\r\n    \"password\": \"ss\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -51,6 +51,12 @@
 		{
 			"name": "Booking",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoid3ciLCJpZCI6Niwic3ViIjoid3dAZ21haWwuY29tIiwiaWF0IjoxNzA3Mjg0NTc1LCJleHAiOjE3MDczMjA1NzV9.0DRbqrqcczwXJ16emV8x-u0gQjjS21PXLMtn-y-Pz4E"
+					}
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
@@ -63,20 +69,20 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/v1/booking?userId=21&taxiId=1&distance=10",
+					"raw": "http://localhost:8080/v2/booking?userId=6&taxiId=1&distance=25",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"v1",
+						"v2",
 						"booking"
 					],
 					"query": [
 						{
 							"key": "userId",
-							"value": "21"
+							"value": "6"
 						},
 						{
 							"key": "taxiId",
@@ -84,7 +90,7 @@
 						},
 						{
 							"key": "distance",
-							"value": "10"
+							"value": "25"
 						}
 					]
 				}
@@ -95,20 +101,23 @@
 			"name": "Create Taxi",
 			"request": {
 				"auth": {
-					"type": "noauth"
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoid3ciLCJpZCI6Niwic3ViIjoid3dAZ21haWwuY29tIiwiaWF0IjoxNzA3Mjg0NTc1LCJleHAiOjE3MDczMjA1NzV9.0DRbqrqcczwXJ16emV8x-u0gQjjS21PXLMtn-y-Pz4E"
+					}
 				},
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"driverName\": \"Ssdsoaaaa2\",\r\n    \"licenseNumber\": 1234,\r\n    \"currentLocation\": \"B\"\r\n}",
+					"raw": "{\r\n    \"driverName\": \"vcssdsv\",\r\n    \"licenseNumber\": 1234,\r\n    \"currentLocation\": \"A\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": "http://localhost:8080/v1/taxi"
+				"url": "http://localhost:8080/v2/taxi"
 			},
 			"response": []
 		},
@@ -116,35 +125,44 @@
 			"name": "View Booking",
 			"request": {
 				"auth": {
-					"type": "noauth"
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoid3ciLCJpZCI6Niwic3ViIjoid3dAZ21haWwuY29tIiwiaWF0IjoxNzA3Mjg0NTc1LCJleHAiOjE3MDczMjA1NzV9.0DRbqrqcczwXJ16emV8x-u0gQjjS21PXLMtn-y-Pz4E"
+					}
 				},
 				"method": "GET",
 				"header": [],
-				"url": "http://localhost:8080/v1/view/1"
+				"url": "http://localhost:8080/v2/view/5"
 			},
 			"response": []
 		},
 		{
 			"name": "Cancel Booking",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoid3ciLCJpZCI6Niwic3ViIjoid3dAZ21haWwuY29tIiwiaWF0IjoxNzA3Mjg0NTc1LCJleHAiOjE3MDczMjA1NzV9.0DRbqrqcczwXJ16emV8x-u0gQjjS21PXLMtn-y-Pz4E"
+					}
+				},
 				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/v1/cancel/15?userId=21&taxiId=1",
+					"raw": "http://localhost:8080/v2/cancel/5?userId=6&taxiId=1",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"v1",
+						"v2",
 						"cancel",
-						"15"
+						"5"
 					],
 					"query": [
 						{
 							"key": "userId",
-							"value": "21"
+							"value": "6"
 						},
 						{
 							"key": "taxiId",
@@ -158,18 +176,24 @@
 		{
 			"name": "Account Balance Update",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoid3ciLCJpZCI6Niwic3ViIjoid3dAZ21haWwuY29tIiwiaWF0IjoxNzA3Mjg0NTc1LCJleHAiOjE3MDczMjA1NzV9.0DRbqrqcczwXJ16emV8x-u0gQjjS21PXLMtn-y-Pz4E"
+					}
+				},
 				"method": "PUT",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"accountBalance\": 1000\r\n}",
+					"raw": "{\r\n    \"accountBalance\": 2000\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": "http://localhost:8080/v1/users/21"
+				"url": "http://localhost:8080/v1/6"
 			},
 			"response": []
 		},
@@ -177,25 +201,28 @@
 			"name": "Nearest Taxi",
 			"request": {
 				"auth": {
-					"type": "noauth"
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoid3ciLCJpZCI6Niwic3ViIjoid3dAZ21haWwuY29tIiwiaWF0IjoxNzA3Mjg0NTc1LCJleHAiOjE3MDczMjA1NzV9.0DRbqrqcczwXJ16emV8x-u0gQjjS21PXLMtn-y-Pz4E"
+					}
 				},
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/v1/location?userId=9&pickupLocation=B",
+					"raw": "http://localhost:8080/v2/location?userId=1&pickupLocation=B",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"v1",
+						"v2",
 						"location"
 					],
 					"query": [
 						{
 							"key": "userId",
-							"value": "9"
+							"value": "1"
 						},
 						{
 							"key": "pickupLocation",
