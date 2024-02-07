@@ -18,17 +18,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/users")
+@RequestMapping("/v1")
 public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/signup")
+    @PostMapping("/users/signup")
     public SignUpResponse signup(@Valid @RequestBody SignupRequest signupRequest) {
         return userService.signup(signupRequest);
     }
 
-    @PostMapping("/login")
+    @PostMapping("/users/login")
     public LoginResponse userLogin(@Valid @RequestBody LoginRequest request) {
         return userService.userLogin(request);
     }

@@ -69,7 +69,7 @@ class UserControllerTest {
 
     @Test
     void testLogin() throws Exception {
-        LoginRequest loginRequest = new LoginRequest(null, null);
+        LoginRequest loginRequest = new LoginRequest("js@gmail.com", "js");
         LoginResponse expectedResponse =
                 new LoginResponse(
                         "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiY2MiLCJpZCI6NCwic3ViIjoiZGV2QGdtYWlsLmNvbSIsImlhdCI6MTcwNjk1OTA3NCwiZXhwIjoxNzA3MDQ1NDc0fQ.oGqlDAn6yXblAUPG-GXL__A5k78nYkfT95tL08y_gxo");
@@ -90,7 +90,7 @@ class UserControllerTest {
         when(userService.accountBalance(Mockito.<Long>any(), Mockito.<AccountBalanceRequest>any()))
                 .thenReturn(buildResult);
         MockHttpServletRequestBuilder contentTypeResult =
-                MockMvcRequestBuilders.put("/v1/users/{userId}", 1L)
+                MockMvcRequestBuilders.put("/v1/{userId}", 1L)
                         .contentType(MediaType.APPLICATION_JSON);
 
         ObjectMapper objectMapper = new ObjectMapper();

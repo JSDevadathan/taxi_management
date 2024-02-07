@@ -22,8 +22,8 @@ public class TaxiControllerTest {
 
     @Test
     void testCreateTaxi() {
-        TaxiRequest taxiRequest = new TaxiRequest(null, null, null);
-        TaxiResponse taxiResponse = new TaxiResponse(1L, null, null, null);
+        TaxiRequest taxiRequest = new TaxiRequest("js", 12L, "UK");
+        TaxiResponse taxiResponse = new TaxiResponse(1L, "js", 12L, "UK");
         when(taxiService.createTaxi(taxiRequest)).thenReturn(taxiResponse);
     }
 }
