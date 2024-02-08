@@ -2,8 +2,7 @@
 
 1. In **signup()** method, It's good to include an exception for the case where the email ID already exists.
 2. In line no.29 in the **userLogin()** method, here exception is not thrown in the case of wrong email ID.
-3. In line no.47 in the **accountBalance()** method, here exception is not thrown in the case of wrong email ID.
-4. In line no.53 in the accountBalance() method, the amount is not being incremented. If a user wants to add some amount to their existing account balance, it does not increment. It only shows the first amount that is passed in the request.
+3. In line no.53 in the accountBalance() method, the amount is not being incremented. If a user wants to add some amount to their existing account balance, it does not increment. It only shows the first amount that is passed in the request.
 
 # BookingService.class
 
