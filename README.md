@@ -8,18 +8,18 @@
 
 #### /v1/users/login (POST): Log in an existing user.
 
-#### /v1/users/{userId} (PUT): Update user account balance.
+#### /v1/{userId} (PUT): Update user account balance.
 
 ## API Endpoints for BookingController:
 
-#### /v1/booking/ (POST): Booking taxi.
+#### /v2/booking/ (POST): Booking taxi.
 
-#### /v1/view/{id}/ (GET): View booking by userId.
+#### /v2/view/{id}/ (GET): View booking by userId.
 
-#### /v1/cancel/{bookingId}/ (GET): Cancel booking.
+#### /v2/cancel/{bookingId}/ (GET): Cancel booking.
 
-#### /v1/location/ (GET): Finding Nearest Taxi Location.
+#### /v2/location/ (GET): Finding Nearest Taxi Location.
 
 ## API Endpoints for TaxiController:
 
-#### /v1/taxi/ (POST): Create a new Taxi.
+#### /v2/taxi/ (POST): Create a new Taxi.
