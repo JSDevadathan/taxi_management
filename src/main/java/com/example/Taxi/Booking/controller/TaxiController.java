@@ -3,6 +3,7 @@ package com.example.Taxi.Booking.controller;
 import com.example.Taxi.Booking.contract.request.TaxiRequest;
 import com.example.Taxi.Booking.contract.response.TaxiResponse;
 import com.example.Taxi.Booking.service.TaxiService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,7 +18,7 @@ public class TaxiController {
     private final TaxiService taxiService;
 
     @PostMapping("/taxi")
-    public TaxiResponse createTaxi(@RequestBody TaxiRequest taxiRequest) {
+    public TaxiResponse createTaxi(@Valid @RequestBody TaxiRequest taxiRequest) {
         return taxiService.createTaxi(taxiRequest);
     }
 }

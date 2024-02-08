@@ -86,7 +86,7 @@ class UserControllerTest {
     @Test
     void testAccountBalance() throws Exception {
         AccountBalanceResponse buildResult =
-                AccountBalanceResponse.builder().accountBalance(10.0d).name("Name").build();
+                AccountBalanceResponse.builder().accountBalance(10.0d).build();
         when(userService.accountBalance(Mockito.<Long>any(), Mockito.<AccountBalanceRequest>any()))
                 .thenReturn(buildResult);
         MockHttpServletRequestBuilder contentTypeResult =
@@ -104,6 +104,6 @@ class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
                 .andExpect(
                         MockMvcResultMatchers.content()
-                                .string("{\"accountBalance\":10.0,\"name\":\"Name\"}"));
+                                .string("{\"accountBalance\":10.0}"));
     }
 }

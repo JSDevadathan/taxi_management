@@ -1,4 +1,4 @@
-package com.example.Taxi.Booking.service;
+package com.example.Taxi.Booking.jwtService;
 
 import com.example.Taxi.Booking.expection.InvalidUserException;
 import com.example.Taxi.Booking.model.User;

@@ -5,6 +5,7 @@ import com.example.Taxi.Booking.contract.request.LoginRequest;
 import com.example.Taxi.Booking.contract.request.SignupRequest;
 import com.example.Taxi.Booking.contract.response.AccountBalanceResponse;
 import com.example.Taxi.Booking.contract.response.SignUpResponse;
+import com.example.Taxi.Booking.expection.EntityNotFoundException;
 import com.example.Taxi.Booking.expection.InvalidUserException;
 import com.example.Taxi.Booking.model.User;
 import com.example.Taxi.Booking.repository.UserRepository;
@@ -78,20 +79,29 @@ public class UserServiceTest {
     @Test
     void testAccountBalance() {
         when(userRepository.save(Mockito.<User>any())).thenReturn(new User());
-
-        Optional<User> ofResult = Optional.of(new User());
+        User buildResult = User.builder()
+                .accountBalance(10.0d)
+                .email("js@gmail.com")
+                .name("Name")
+                .password("hy")
+                .userId(1L)
+                .build();
+        Optional<User> ofResult = Optional.of(buildResult);
         when(userRepository.findById(Mockito.<Long>any())).thenReturn(ofResult);
-
-        AccountBalanceResponse buildResult =
-                AccountBalanceResponse.builder().accountBalance(10.0d).name(null).build();
-
         when(modelMapper.map(Mockito.<Object>any(), Mockito.<Class<AccountBalanceResponse>>any()))
-                .thenReturn(buildResult);
-        userService.accountBalance(1L, new AccountBalanceRequest());
-
-        verify(modelMapper)
-                .map(Mockito.<Object>any(), Mockito.<Class<AccountBalanceResponse>>any());
+                .thenThrow(new InvalidUserException("Entity"));
+        AccountBalanceRequest accountBalanceRequest = AccountBalanceRequest.builder().accountBalance(10.0d).build();
+        assertThrows(InvalidUserException.class, () -> userService.accountBalance(1L, accountBalanceRequest));
+        verify(modelMapper).map(Mockito.<Object>any(), Mockito.<Class<AccountBalanceResponse>>any());
         verify(userRepository).findById(Mockito.<Long>any());
         verify(userRepository).save(Mockito.<User>any());
+    }
+    @Test
+    public void testAccountBalanceNotFound() {
+        Long id = 1L;
+
+        when(userRepository.findById(id)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> userService.accountBalance(id, null));
     }
 }

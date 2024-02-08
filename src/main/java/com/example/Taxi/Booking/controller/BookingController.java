@@ -6,6 +6,8 @@ import com.example.Taxi.Booking.contract.response.CancelResponse;
 import com.example.Taxi.Booking.contract.response.TaxiResponse;
 import com.example.Taxi.Booking.service.BookingService;
 import java.util.List;
+
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +25,7 @@ public class BookingController {
     private final BookingService bookingService;
 
     @PostMapping("/booking")
-    public BookingResponse book(
+    public BookingResponse book(@Valid
             @RequestParam Long userId,
             @RequestParam Long taxiId,
             @RequestParam Long distance,
@@ -36,15 +38,14 @@ public class BookingController {
         return bookingService.view(id);
     }
 
-    @PutMapping("/cancel/{bookingId}")
+    @PutMapping("/cancel")
     public CancelResponse cancelBooking(
-            @PathVariable Long bookingId, @RequestParam Long userId, @RequestParam Long taxiId) {
+            @RequestParam Long bookingId, @RequestParam Long userId, @RequestParam Long taxiId) {
         return bookingService.cancelBooking(bookingId, userId, taxiId);
     }
 
     @GetMapping("/location")
-    public List<TaxiResponse> findLocation(
-            @RequestParam Long userId, @RequestParam String pickupLocation) {
-        return bookingService.findLocation(userId, pickupLocation);
+    public List<TaxiResponse> findLocation(@RequestParam String pickupLocation) {
+        return bookingService.findLocation(pickupLocation);
     }
 }

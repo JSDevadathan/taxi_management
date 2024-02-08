@@ -4,6 +4,7 @@ import com.example.Taxi.Booking.contract.request.BookingRequest;
 import com.example.Taxi.Booking.contract.response.BookingResponse;
 import com.example.Taxi.Booking.contract.response.CancelResponse;
 import com.example.Taxi.Booking.contract.response.TaxiResponse;
+import com.example.Taxi.Booking.expection.AccountBalanceException;
 import com.example.Taxi.Booking.expection.EntityNotFoundException;
 import com.example.Taxi.Booking.model.Booking;
 import com.example.Taxi.Booking.model.Taxi;
@@ -81,7 +82,7 @@ public class BookingServiceTest {
         when(userRepository.findById(Mockito.<Long>any())).thenReturn(ofUser);
 
         assertThrows(
-                EntityNotFoundException.class,
+                AccountBalanceException.class,
                 () -> bookingService.book(1L, 1L, 20L, bookingRequest));
 
         verify(taxiRepository).findById(Mockito.<Long>any());
@@ -101,7 +102,7 @@ public class BookingServiceTest {
         User user = User.builder().build();
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
-        List<TaxiResponse> result = bookingService.findLocation(userId, pickupLocation);
+        List<TaxiResponse> result = bookingService.findLocation(pickupLocation);
 
         assertEquals(1, result.size());
         verify(taxiRepository).findAll();
@@ -128,7 +129,7 @@ public class BookingServiceTest {
 
         BookingRequest bookingRequest = new BookingRequest();
 
-        assertThrows(EntityNotFoundException.class, () -> {
+        assertThrows(AccountBalanceException.class, () -> {
             bookingService.book(userId, taxiId, distance, bookingRequest);
         }, "Insufficient balance");
     }
@@ -226,17 +227,16 @@ public class BookingServiceTest {
 
     @Test
     void testFindLocation() {
-        Long userId = 1L;
         String location = "Pickup Location";
         User user = new User();
 
         when(taxiRepository.findAll()).thenReturn(new ArrayList<>());
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+//        when(userRepository.findById()).thenReturn(Optional.of(user));
 
         assertThrows(
-                EntityNotFoundException.class, () -> bookingService.findLocation(userId, location));
+                EntityNotFoundException.class, () -> bookingService.findLocation(location));
 
-        verify(userRepository).findById(userId);
+//        verify(userRepository).findById(userId);
         verify(taxiRepository).findAll();
     }
 

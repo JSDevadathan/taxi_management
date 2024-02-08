@@ -79,7 +79,8 @@ public class BookingControllerTest {
         when(bookingService.cancelBooking(bookingId, userId, taxiId)).thenReturn(cancelResponse);
 
         mockMvc.perform(
-                        put("/v2/cancel/" + bookingId)
+                        put("/v2/cancel")
+                                .param("bookingId", String.valueOf(bookingId))
                                 .param("userId", String.valueOf(userId))
                                 .param("taxiId", String.valueOf(taxiId)))
                 .andDo(print())
@@ -89,15 +90,13 @@ public class BookingControllerTest {
 
     @Test
     void testFindLocation() throws Exception {
-        Long userId = 1L;
         String pickupLocation = "bbb";
         List<TaxiResponse> taxiResponses = new ArrayList<>();
 
-        when(bookingService.findLocation(userId, pickupLocation)).thenReturn(taxiResponses);
+        when(bookingService.findLocation(pickupLocation)).thenReturn(taxiResponses);
 
         mockMvc.perform(
                         get("/v2/location")
-                                .param("userId", String.valueOf(userId))
                                 .param("pickupLocation", pickupLocation))
                 .andDo(print())
                 .andExpect(status().isOk())

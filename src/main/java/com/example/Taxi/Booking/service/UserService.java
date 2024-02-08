@@ -23,7 +23,6 @@ public class UserService {
     private final ModelMapper modelMapper;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
-
     public SignUpResponse signup(SignupRequest signupRequest) {
         User user =
                 User.builder()
@@ -36,7 +35,10 @@ public class UserService {
     }
 
     public LoginResponse userLogin(LoginRequest request) {
-        User user = userRepository.findByEmail(request.getEmail());
+
+        User user =
+                userRepository
+                        .findByEmail(request.getEmail());
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new InvalidUserException("Login");
         }
@@ -53,10 +55,9 @@ public class UserService {
         user =
                 User.builder()
                         .userId(user.getUserId())
-                        .name(user.getName())
                         .email(user.getEmail())
                         .password(user.getPassword())
-                        .accountBalance(accountBalanceRequest.getAccountBalance())
+                        .accountBalance(accountBalanceRequest.getAccountBalance() + user.getAccountBalance())
                         .build();
         User updatedUser = userRepository.save(user);
         return modelMapper.map(updatedUser, AccountBalanceResponse.class);

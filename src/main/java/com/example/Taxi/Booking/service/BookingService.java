@@ -5,6 +5,7 @@ import com.example.Taxi.Booking.contract.request.BookingRequest;
 import com.example.Taxi.Booking.contract.response.BookingResponse;
 import com.example.Taxi.Booking.contract.response.CancelResponse;
 import com.example.Taxi.Booking.contract.response.TaxiResponse;
+import com.example.Taxi.Booking.expection.AccountBalanceException;
 import com.example.Taxi.Booking.expection.EntityNotFoundException;
 import com.example.Taxi.Booking.model.Booking;
 import com.example.Taxi.Booking.model.Taxi;
@@ -45,7 +46,7 @@ public class BookingService {
         Double fare = distance * minimumCharge;
 
         if (fare > user.getAccountBalance()) {
-            throw new EntityNotFoundException("Insufficient balance");
+            throw new AccountBalanceException("Insufficient balance");
         }
 
         Booking booking =
@@ -68,7 +69,7 @@ public class BookingService {
                         .accountBalance(user.getAccountBalance() - booking.getFare())
                         .build();
 
-        savings = userRepository.save(savings);
+        userRepository.save(savings);
         booking = bookRepository.save(booking);
         return modelMapper.map(booking, BookingResponse.class);
     }
@@ -110,22 +111,18 @@ public class BookingService {
         return CancelResponse.builder().cancel("Booking Cancelled").build();
     }
 
-    public List<TaxiResponse> findLocation(Long userId, String pickupLocation) {
-        User user =
-                userRepository
-                        .findById(userId)
-                        .orElseThrow(() -> new EntityNotFoundException("User", userId));
+    public List<TaxiResponse> findLocation(String pickupLocation) {
         List<Taxi> taxi = taxiRepository.findAll();
-        List<Taxi> taxiAvailable = new ArrayList<>();
+        List<Taxi> currentTaxi = new ArrayList<>();
         for (Taxi taxis : taxi) {
             if (taxis.getCurrentLocation().equals(pickupLocation)) {
-                taxiAvailable.add(taxis);
+                currentTaxi.add(taxis);
             }
         }
-        if (taxiAvailable.isEmpty()) {
+        if (currentTaxi.isEmpty()) {
             throw new EntityNotFoundException("Taxi");
         } else {
-            return taxiAvailable.stream()
+            return currentTaxi.stream()
                     .map(taxi1 -> modelMapper.map(taxi1, TaxiResponse.class))
                     .collect(Collectors.toList());
         }

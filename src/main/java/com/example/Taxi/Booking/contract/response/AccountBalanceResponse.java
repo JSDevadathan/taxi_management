@@ -11,5 +11,4 @@ import lombok.NoArgsConstructor;
 @Builder
 public class AccountBalanceResponse {
     private Double accountBalance;
-    private String name;
 }
