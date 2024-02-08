@@ -1,5 +1,6 @@
 package com.example.Taxi.Booking.config;
 
+import com.example.Taxi.Booking.expection.InvalidUserException;
 import com.example.Taxi.Booking.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -20,7 +21,7 @@ public class ApplicationConfiguration {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> (UserDetails) userRepository.findByEmail(username);
+        return username -> userRepository.findByEmail(username).orElseThrow(() -> new InvalidUserException("login"));
     }
 
     @Bean

@@ -65,7 +65,7 @@ public class UserServiceTest {
 
     @Test
     void testUserLogin() {
-        when(userRepository.findByEmail(Mockito.<String>any())).thenReturn(new User());
+        when(userRepository.findByEmail(Mockito.<String>any())).thenReturn(Optional.of(new User()));
         when(passwordEncoder.matches(Mockito.<CharSequence>any(), Mockito.<String>any()))
                 .thenReturn(false);
         assertThrows(

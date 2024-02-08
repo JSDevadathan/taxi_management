@@ -19,11 +19,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class JwtService {
-    @Value("${jwt.secret}")
-    private String secretKey;
 
-    @Value("${jwt.expiry}")
-    private Integer expirationTime;
+    private static final String SECRET_KEY = System.getenv("SECRET_KEY");
+    
 
     public String generateToken(User userDetails) {
         Map<String, Object> claims = new HashMap<>();
@@ -33,13 +31,13 @@ public class JwtService {
                 .setClaims(claims)
                 .setSubject(userDetails.getEmail())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
     private Key getSignInKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 

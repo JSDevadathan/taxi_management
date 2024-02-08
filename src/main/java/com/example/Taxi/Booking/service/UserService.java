@@ -6,6 +6,7 @@ import com.example.Taxi.Booking.contract.request.SignupRequest;
 import com.example.Taxi.Booking.contract.response.AccountBalanceResponse;
 import com.example.Taxi.Booking.contract.response.LoginResponse;
 import com.example.Taxi.Booking.contract.response.SignUpResponse;
+import com.example.Taxi.Booking.expection.EmailNotFoundException;
 import com.example.Taxi.Booking.expection.EntityNotFoundException;
 import com.example.Taxi.Booking.expection.InvalidUserException;
 import com.example.Taxi.Booking.model.User;
@@ -24,6 +25,9 @@ public class UserService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     public SignUpResponse signup(SignupRequest signupRequest) {
+        if(userRepository.existsByEmail(signupRequest.getEmail())) {
+    throw new EmailNotFoundException("Login");
+        }
         User user =
                 User.builder()
                         .email(signupRequest.getEmail())
@@ -35,10 +39,10 @@ public class UserService {
     }
 
     public LoginResponse userLogin(LoginRequest request) {
-
         User user =
                 userRepository
-                        .findByEmail(request.getEmail());
+                        .findByEmail(request.getEmail()).orElseThrow(() -> new InvalidUserException("Login"));
+
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new InvalidUserException("Login");
         }
