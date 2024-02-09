@@ -49,9 +49,9 @@ public class BookingControllerTest {
 
     @Test
     void testBooking() {
-        BookingRequest bookingRequest = new BookingRequest("asda", "dasd");
+        BookingRequest bookingRequest = new BookingRequest("Kochi", "Vyttila");
         BookingResponse bookingResponse =
-                new BookingResponse(1L, 1L, 1L, "ADS", "da", 120D, LocalDateTime.now(), Status.BOOKED);
+                new BookingResponse(1L, 1L, 1L, "Kochi", "Vyttila", 120D, LocalDateTime.now(), Status.BOOKED);
         when(bookingService.book(1L, 1L, 1L, bookingRequest)).thenReturn(bookingResponse);
     }
 

@@ -72,9 +72,9 @@ public class BookingServiceTest {
 
     @Test
     void testBook_InsufficientBalance() {
-        Taxi taxi = new Taxi(1L, "cc", null, "ds");
-        User user = new User(1L, "vv", "das@gmail.com", "ds", 10.0);
-        BookingRequest bookingRequest = new BookingRequest("Pickup Location", "Drop Off Location");
+        Taxi taxi = new Taxi(1L, "Ram", 12L, "UK");
+        User user = new User(1L, "Tom", "tom@gmail.com", "tom123", 10.0);
+        BookingRequest bookingRequest = new BookingRequest("UK", "US");
         Optional<Taxi> ofResult = Optional.of(taxi);
         Optional<User> ofUser = Optional.of(user);
 
@@ -92,7 +92,7 @@ public class BookingServiceTest {
     @Test
     public void testFindLocationAddsTaxisInPickupLocation() {
         Long userId = 1L;
-        String pickupLocation = "Test Location";
+        String pickupLocation = "UK";
         Taxi taxiInLocation = Taxi.builder()
                 .currentLocation(pickupLocation)
                 .build();
@@ -147,8 +147,8 @@ public class BookingServiceTest {
                 .bookingId(bookingId)
                 .user(user)
                 .taxi(taxi)
-                .pickupLocation("Location A")
-                .dropOffLocation("Location B")
+                .pickupLocation("UK")
+                .dropOffLocation("US")
                 .bookingTime(LocalDateTime.now())
                 .fare(100.00)
                 .status(BOOKED)
@@ -229,14 +229,9 @@ public class BookingServiceTest {
     void testFindLocation() {
         String location = "Pickup Location";
         User user = new User();
-
         when(taxiRepository.findAll()).thenReturn(new ArrayList<>());
-//        when(userRepository.findById()).thenReturn(Optional.of(user));
-
         assertThrows(
                 EntityNotFoundException.class, () -> bookingService.findLocation(location));
-
-//        verify(userRepository).findById(userId);
         verify(taxiRepository).findAll();
     }
 
@@ -288,4 +283,5 @@ public class BookingServiceTest {
         BookingResponse actualResponse = bookingService.book(user.getUserId(), taxiId, distance, request);
         assertEquals(expectedResponse, actualResponse);
     }
+
 }

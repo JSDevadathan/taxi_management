@@ -49,13 +49,13 @@ class UserControllerTest {
     @Test
     public void testSignup_Success() throws Exception {
         SignupRequest signupRequest = SignupRequest.builder()
-                .email("testuser@example.com")
+                .email("js@gmail.com")
                 .password("password")
-                .name("Test User")
+                .name("Name")
                 .build();
 
         SignUpResponse signUpResponse = SignUpResponse.builder()
-                .name("Test User")
+                .name("Name")
                 .build();
 
         when(userService.signup(any(SignupRequest.class))).thenReturn(signUpResponse);

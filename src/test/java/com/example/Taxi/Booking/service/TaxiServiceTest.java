@@ -38,8 +38,8 @@ public class TaxiServiceTest {
         taxi = new Taxi();
         taxiResponse =
                 TaxiResponse.builder()
-                        .currentLocation("Current Location")
-                        .driverName("Driver Name")
+                        .currentLocation("UK")
+                        .driverName("Tom")
                         .licenseNumber(1L)
                         .taxiId(1L)
                         .build();

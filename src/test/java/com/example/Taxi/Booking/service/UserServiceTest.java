@@ -4,7 +4,9 @@ import com.example.Taxi.Booking.contract.request.AccountBalanceRequest;
 import com.example.Taxi.Booking.contract.request.LoginRequest;
 import com.example.Taxi.Booking.contract.request.SignupRequest;
 import com.example.Taxi.Booking.contract.response.AccountBalanceResponse;
+import com.example.Taxi.Booking.contract.response.LoginResponse;
 import com.example.Taxi.Booking.contract.response.SignUpResponse;
+import com.example.Taxi.Booking.expection.EmailNotFoundException;
 import com.example.Taxi.Booking.expection.EntityNotFoundException;
 import com.example.Taxi.Booking.expection.InvalidUserException;
 import com.example.Taxi.Booking.model.User;
@@ -21,7 +23,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -73,6 +79,16 @@ public class UserServiceTest {
                 () -> userService.userLogin(new LoginRequest(null, null)));
         verify(userRepository).findByEmail(Mockito.<String>any());
         verify(passwordEncoder).matches(Mockito.<CharSequence>any(), Mockito.<String>any());
+    }
+
+    @Test
+    public void testSignupEmailNotFoundException() {
+        SignupRequest signupRequest = SignupRequest.builder()
+                .email("js@gmail.com")
+                .build();
+
+        when(userRepository.existsByEmail(signupRequest.getEmail())).thenReturn(true);
+        assertThrows(EmailNotFoundException.class, () -> userService.signup(signupRequest));
     }
 
 
